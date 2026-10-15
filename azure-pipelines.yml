@@ -14,6 +14,12 @@ stages:
             organization: 'ankitlodhi11'
             scannerMode: 'cli'
             configMode: 'file'
+        - task: SonarCloudAnalyze@4
+          displayName: 'Run SonarCloud Analysis'
+        - task: SonarCloudPublish@4
+          displayName: 'Publish Quality Gate Result'
+          inputs:
+            pollingTimeoutSec: '300'
   - stage:
     displayName: terraform&init 
     jobs:
