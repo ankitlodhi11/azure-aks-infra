@@ -4,7 +4,7 @@ pool:
  name: dhurander
 stages:
   - stage:
-    displayName: terraforminit 
+    displayName: terraform&init 
     jobs:
       - job: 
         displayName: terraform init
@@ -36,5 +36,36 @@ stages:
           inputs:
             provider: 'azurerm'
             command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+            environmentServiceNameAzureRM: 'anuj-infra'
+  - stage: 
+    displayName: manual&validation
+    jobs:
+      - job: 
+        displayName: approval
+        pool: server
+        steps:
+        - task: ManualValidation@1
+          inputs:
+            notifyUsers: 'ankitlodhi11@gmail.com'
+  - stage:
+    displayName: apply
+    jobs:
+      - job: 
+        displayName: apply
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+            backendServiceArm: 'anuj-infra'
+            backendAzureRmStorageAccountName: 'anujstatefile123'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: 'anuj.terraform.tfstate'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
             workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
             environmentServiceNameAzureRM: 'anuj-infra'
