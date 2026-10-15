@@ -9,17 +9,14 @@ stages:
       - job: 
         steps:
         - task: SonarCloudPrepare@4
+          displayName: 'Prepare SonarCloud Analysis'
           inputs:
             SonarQube: 'Azure subscription 1'
-            organization: 'ankitlodhi11'
+            organization: 'ankitlodhi'
             scannerMode: 'cli'
-            configMode: 'file'
-        - task: SonarCloudAnalyze@4
-          displayName: 'Run SonarCloud Analysis'
-        - task: SonarCloudPublish@4
-          displayName: 'Publish Quality Gate Result'
-          inputs:
-            pollingTimeoutSec: '300'
+            configMode: 'manual'
+            cliProjectKey: 'ankitlodhi11_azure-aks-infra'
+            cliSources: '.'
   - stage:
     displayName: terraform&init 
     jobs:
