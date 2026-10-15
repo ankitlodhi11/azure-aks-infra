@@ -8,6 +8,11 @@ resource "azurerm_kubernetes_cluster" "this" {
   sku_tier                  = "Free"
   role_based_access_control_enabled = true
   local_account_disabled    = true
+  # Microsoft Entra ID integration
+  azure_active_directory_role_based_access_control {
+    tenant_id          = data.azurerm_client_config.current.tenant_id
+    azure_rbac_enabled = true
+  }
 
   default_node_pool {
     name           = "system"
