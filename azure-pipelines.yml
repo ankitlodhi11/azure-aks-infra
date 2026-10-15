@@ -3,9 +3,11 @@ trigger:
 pool: 
  name: dhurander
 stages:
-  - stage: 
+  - stage:
+    displayName: terraforminit 
     jobs:
       - job: 
+        displayName: terraform init
         steps:
         - task: TerraformInstaller@1
           inputs:
@@ -20,3 +22,32 @@ stages:
             backendAzureRmStorageAccountName: 'anujstatefile123'
             backendAzureRmContainerName: 'tfstate'
             backendAzureRmKey: 'anuj.terraform.tfstate'
+  - stage: plan
+    displayName: plan
+    jobs:
+      - job: 
+        displayName: terraform plan
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+  - stage: 
+    dependsOn: plan
+    condition: succeeded ()
+    displayName: manualapproval
+    jobs:
+      - job: 
+        pool: server
+        displayName: manual approval required
+        steps:
+        - task: ManualValidation@1
+          inputs:
+            notifyUsers: 'ankitlodhi11@gmail.com'
+        timeoutInMinutes: 60
