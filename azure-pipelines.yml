@@ -3,6 +3,17 @@ trigger:
 pool: 
  name: dhurander
 stages:
+  - stage: scan
+    displayName: scan
+    jobs:
+      - job: 
+        steps:
+        - task: SonarCloudPrepare@4
+          inputs:
+            SonarQube: 'Azure subscription 1'
+            organization: 'ankitlodhi11'
+            scannerMode: 'cli'
+            configMode: 'file'
   - stage:
     displayName: terraform&init 
     jobs:
