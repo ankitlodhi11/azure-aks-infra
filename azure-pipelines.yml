@@ -1,0 +1,22 @@
+trigger:
+- main 
+pool: 
+ name: dhurander
+stages:
+  - stage: 
+    jobs:
+      - job: 
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: '1.13.4'
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
+            backendServiceArm: 'anuj-infra'
+            backendAzureRmResourceGroupName: 'anuj-rg-bc'
+            backendAzureRmStorageAccountName: 'anujstatefile123'
+            backendAzureRmContainerName: 'tfstate'
+            backendAzureRmKey: 'anuj.terraform.tfstate'
