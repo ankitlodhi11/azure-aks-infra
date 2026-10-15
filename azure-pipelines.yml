@@ -32,16 +32,16 @@ stages:
             provider: 'azurerm'
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/environments/dev'
-  - stage: 
-    dependsOn: plan
-    condition: succeeded ()
-    displayName: manualapproval
-    jobs:
-      - job: 
-        pool: server
-        displayName: manual approval required
-        steps:
-        - task: ManualValidation@1
-          inputs:
-            notifyUsers: 'ankitlodhi11@gmail.com'
-        timeoutInMinutes: 60
+  # - stage: 
+  #   dependsOn: plan
+  #   condition: succeeded ()
+  #   displayName: manualapproval
+  #   jobs:
+  #     - job: 
+  #       pool: server
+  #       displayName: manual approval required
+  #       steps:
+  #       - task: ManualValidation@1
+  #         inputs:
+  #           notifyUsers: 'ankitlodhi11@gmail.com'
+  #       timeoutInMinutes: 60
