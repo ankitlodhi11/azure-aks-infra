@@ -1,4 +1,4 @@
-
+data "azurerm_client_config" "current" {}
 resource "azurerm_kubernetes_cluster" "this" {
   name                = var.name
   location            = var.location
